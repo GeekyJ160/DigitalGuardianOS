@@ -1,0 +1,195 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader", "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-bg: #0a0b0d;
+  --color-surface: #12141a;
+  --color-elevated: #1a1d24;
+  --color-fg: #ecece8;
+  --color-muted: #9a9aa3;
+  --color-subtle: #6e6e76;
+  --color-accent: #c8ccd4;
+  --color-accent-fg: #0a0b0d;
+  --color-border: #2a2d36;
+  --color-live: #c45c26;
+  --color-ok: #7d9a7e;
+  --color-danger: #c44a3a;
+
+  --color-background: #0a0b0d;
+  --color-foreground: #ecece8;
+  --color-card: #12141a;
+  --color-card-foreground: #ecece8;
+  --color-primary: #c8ccd4;
+  --color-primary-foreground: #0a0b0d;
+  --color-secondary: #1a1d24;
+  --color-secondary-foreground: #ecece8;
+  --color-muted-foreground: #9a9aa3;
+  --color-destructive: #c44a3a;
+  --color-input: #2a2d36;
+  --color-ring: #c8ccd4;
+  --color-popover: #1a1d24;
+  --color-popover-foreground: #ecece8;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius: 12px;
+
+  --shadow-border: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-border-hover: 0 0 0 1px rgba(255, 255, 255, 0.13);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 30%, transparent);
+    color: var(--color-fg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes pulse-live {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes ring-out {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.stagger-in > * {
+  animation: fade-up 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger-in > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-in > *:nth-child(2) {
+  animation-delay: 40ms;
+}
+.stagger-in > *:nth-child(3) {
+  animation-delay: 80ms;
+}
+.stagger-in > *:nth-child(4) {
+  animation-delay: 120ms;
+}
+.stagger-in > *:nth-child(5) {
+  animation-delay: 160ms;
+}
+.stagger-in > *:nth-child(6) {
+  animation-delay: 200ms;
+}
+
+.live-dot {
+  animation: pulse-live 1.8s ease-in-out infinite;
+}
+
+.live-ring::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 1px solid var(--color-live);
+  animation: ring-out 2.4s ease-out infinite;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.decoy-shell {
+  background: #0e0e10;
+  color: #f4f4f5;
+}
+.decoy-muted {
+  color: #8b8b90;
+}
+.decoy-key {
+  background: #2a2a2e;
+  color: #f4f4f5;
+}
+.decoy-util {
+  background: #5a5a60;
+  color: #0e0e10;
+}
+.decoy-op {
+  background: #c45c26;
+  color: #f4f4f5;
+}
+.decoy-led {
+  background: #c45c26;
+}

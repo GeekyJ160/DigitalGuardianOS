@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "GuardianOS",
+      "hasCanvas": false,
+      "bodyTextLen": 229,
+      "bodyTextHash": "1aea88bfbbe41e3f845df9354d84e957b6cac75a374512633e15b8a11532a4a9",
+      "bodyTextPrefix": "GUARDIANOS THE BLACK BOX FOR YOUR REAL LIFE GuardianOS protects ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "GuardianOS",
+      "hasCanvas": false,
+      "bodyTextLen": 229,
+      "bodyTextHash": "1aea88bfbbe41e3f845df9354d84e957b6cac75a374512633e15b8a11532a4a9",
+      "bodyTextPrefix": "GUARDIANOS THE BLACK BOX FOR YOUR REAL LIFE GuardianOS protects ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}
