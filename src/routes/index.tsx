@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Fingerprint,
+  LineChart,
   Lock,
   Radio,
   ScrollText,
@@ -88,6 +89,24 @@ function Home() {
         </Card>
       )}
 
+      <Card className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-xs tracking-[0.16em] text-subtle uppercase">
+            Dexter skill · on
+          </p>
+          <h2 className="mt-2 font-display text-2xl tracking-tight">
+            Financial research, planned and sourced
+          </h2>
+          <p className="mt-2 max-w-lg text-sm text-muted">
+            Dexter decomposes the question, searches live markets, checks the
+            numbers, and files a memo. It does not advise a trade.
+          </p>
+        </div>
+        <Button asChild>
+          <Link to="/dexter">Open Dexter</Link>
+        </Button>
+      </Card>
+
       <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <QuickLink to="/circle" icon={Users} label="Circle" meta={`${contacts.length} people`} />
         <QuickLink
@@ -98,6 +117,7 @@ function Home() {
         />
         <QuickLink to="/triggers" icon={Fingerprint} label="Triggers" meta="PIN · phrase · gesture" />
         <QuickLink to="/protocol" icon={ScrollText} label="Protocol" meta="Escrow rules" />
+        <QuickLink to="/dexter" icon={LineChart} label="Dexter" meta="Research desk" />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-5">
@@ -157,7 +177,7 @@ function QuickLink({
   label,
   meta,
 }: {
-  to: "/circle" | "/capsules" | "/triggers" | "/protocol";
+  to: "/circle" | "/capsules" | "/triggers" | "/protocol" | "/dexter";
   icon: typeof Radio;
   label: string;
   meta: string;

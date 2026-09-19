@@ -18,6 +18,7 @@ import type {
   Capsule,
   CircleNotice,
   Contact,
+  DexterMemo,
   EventKind,
   GuardianState,
   ObservedEvent,
@@ -67,6 +68,8 @@ type GuardianActions = {
   saveChronology: (capsuleId: string, text: string) => void;
   releaseEscrow: (capsuleId: string) => void;
   addNote: (text: string) => void;
+  saveDexterMemo: (memo: Omit<DexterMemo, "id" | "createdAt">) => string;
+  removeDexterMemo: (id: string) => void;
 };
 
 type Store = GuardianState & GuardianActions;
@@ -159,6 +162,7 @@ const initial = (): GuardianState => ({
   protocol: SEED_PROTOCOL,
   notices: [],
   offlineSince: null,
+  dexterMemos: [],
 });
 
 export const useGuardianStore = create<Store>()(
@@ -738,6 +742,22 @@ export const useGuardianStore = create<Store>()(
           ),
         });
       },
+
+      saveDexterMemo: (memo) => {
+        const id = uid();
+        const row: DexterMemo = {
+          id,
+          createdAt: Date.now(),
+          ...memo,
+        };
+        set({ dexterMemos: [row, ...(get().dexterMemos ?? [])].slice(0, 20) });
+        return id;
+      },
+
+      removeDexterMemo: (id) =>
+        set({
+          dexterMemos: (get().dexterMemos ?? []).filter((m) => m.id !== id),
+        }),
     }),
     {
       name: "guardianos-v1",
@@ -751,6 +771,14 @@ export const useGuardianStore = create<Store>()(
         }
         return localStorage;
       }),
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<GuardianState>;
+        return {
+          ...current,
+          ...p,
+          dexterMemos: p.dexterMemos ?? [],
+        };
+      },
       partialize: (s) => ({
         onboarded: s.onboarded,
         displayName: s.displayName,
@@ -762,6 +790,7 @@ export const useGuardianStore = create<Store>()(
         protocol: s.protocol,
         notices: s.notices,
         offlineSince: s.offlineSince,
+        dexterMemos: s.dexterMemos ?? [],
       }),
     },
   ),

@@ -161,6 +161,19 @@ var Calculator = createLucideIcon("calculator", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ChartLine = createLucideIcon("chart-line", [["path", {
+	d: "M3 3v16a2 2 0 0 0 2 2h16",
+	key: "c24i48"
+}], ["path", {
+	d: "m19 9-5 5-4-4-3 3",
+	key: "2osh9i"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Check = createLucideIcon("check", [["path", {
 	d: "M20 6 9 17l-5-5",
 	key: "1gmf2c"
@@ -613,4 +626,4 @@ var Wifi = createLucideIcon("wifi", [
 	}]
 ]);
 //#endregion
-export { Download as _, TriangleAlert as a, Calculator as b, ScrollText as c, Mic as d, MapPin as f, Fingerprint as g, House as h, Users as i, Radio as l, Keyboard as m, WifiOff as n, Trash2 as o, Lock as p, Watch as r, ShieldAlert as s, Wifi as t, Plus as u, ChevronRight as v, Battery as x, Check as y };
+export { Battery as S, Download as _, TriangleAlert as a, ChartLine as b, ScrollText as c, Mic as d, MapPin as f, Fingerprint as g, House as h, Users as i, Radio as l, Keyboard as m, WifiOff as n, Trash2 as o, Lock as p, Watch as r, ShieldAlert as s, Wifi as t, Plus as u, ChevronRight as v, Calculator as x, Check as y };

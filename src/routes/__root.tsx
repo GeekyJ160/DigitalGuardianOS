@@ -4,11 +4,9 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { AppShell } from "@/components/app-shell";
-import { CapsuleMark } from "@/components/capsule-mark";
 import { GuardianRuntime } from "@/components/guardian-runtime";
 import { Onboarding } from "@/components/onboarding";
 import { Toaster } from "@/components/ui/sonner";
@@ -64,29 +62,6 @@ function Root() {
 
 function Boot({ children }: { children: React.ReactNode }) {
   const onboarded = useGuardianStore((s) => s.onboarded);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const done = () => setReady(true);
-    const unsub = useGuardianStore.persist.onFinishHydration(done);
-    if (useGuardianStore.persist.hasHydrated()) done();
-    const t = window.setTimeout(done, 120);
-    return () => {
-      unsub();
-      window.clearTimeout(t);
-    };
-  }, []);
-
-  if (!ready) {
-    return (
-      <div className="flex min-h-dvh flex-col items-center justify-center gap-3 bg-bg text-fg">
-        <CapsuleMark className="size-10" />
-        <p className="text-xs tracking-[0.22em] text-muted uppercase">
-          GuardianOS
-        </p>
-      </div>
-    );
-  }
 
   if (!onboarded) return <Onboarding />;
 

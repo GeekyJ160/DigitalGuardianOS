@@ -89,7 +89,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-R71dAmVG.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-Bh-5-MOa.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -111,11 +111,15 @@ async function getStartManifest(matchedRoutes) {
 var manifest = {
 	"0f4e9ae5e3899f5471cecbf31cc7abdf04fe9ef577671b723ed3d4ee091a638e": {
 		functionName: "reconstructChronology_createServerFn_handler",
-		importer: () => import("./ai-DuXibIiQ.mjs")
+		importer: () => import("./ai-CQD0vG31.mjs")
 	},
 	"4e72452e5bb8953af03c8d5382848b2b56c27b9ff6cfe69f46bbb835370c828c": {
 		functionName: "assessSession_createServerFn_handler",
-		importer: () => import("./ai-DuXibIiQ.mjs")
+		importer: () => import("./ai-CQD0vG31.mjs")
+	},
+	"82a4e8dedd634f84e8c5f9b1374e6db7c027d05a2af6d198706866a7ebcb4b89": {
+		functionName: "runDexterResearch_createServerFn_handler",
+		importer: () => import("./dexter-BeCYjRQ4.mjs")
 	}
 };
 async function getServerFnById(id, access) {
@@ -1385,7 +1389,7 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-D2huocgC.mjs").then((n) => n.t),
+		import("./router-Bl4lStQe.mjs").then((n) => n.t),
 		import("./start-5Z2QO8AU.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);

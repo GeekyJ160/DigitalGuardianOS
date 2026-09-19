@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CapsulesRouteImport } from './routes/capsules'
 import { Route as CircleRouteImport } from './routes/circle'
 import { Route as DecoyRouteImport } from './routes/decoy'
+import { Route as DexterRouteImport } from './routes/dexter'
 import { Route as ProtocolRouteImport } from './routes/protocol'
 import { Route as TriggersRouteImport } from './routes/triggers'
 import { Route as VerifyRouteImport } from './routes/verify'
@@ -40,6 +41,11 @@ const CircleRoute = CircleRouteImport.update({
 const DecoyRoute = DecoyRouteImport.update({
   id: '/decoy',
   path: '/decoy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DexterRoute = DexterRouteImport.update({
+  id: '/dexter',
+  path: '/dexter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtocolRoute = ProtocolRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
+  '/dexter': typeof DexterRoute
   '/protocol': typeof ProtocolRoute
   '/triggers': typeof TriggersRoute
   '/verify': typeof VerifyRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
+  '/dexter': typeof DexterRoute
   '/protocol': typeof ProtocolRoute
   '/triggers': typeof TriggersRoute
   '/verify': typeof VerifyRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
+  '/dexter': typeof DexterRoute
   '/protocol': typeof ProtocolRoute
   '/triggers': typeof TriggersRoute
   '/verify': typeof VerifyRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/capsules'
     | '/circle'
     | '/decoy'
+    | '/dexter'
     | '/protocol'
     | '/triggers'
     | '/verify'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/'
     | '/circle'
     | '/decoy'
+    | '/dexter'
     | '/protocol'
     | '/triggers'
     | '/verify'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/capsules'
     | '/circle'
     | '/decoy'
+    | '/dexter'
     | '/protocol'
     | '/triggers'
     | '/verify'
@@ -174,6 +186,7 @@ export interface RootRouteChildren {
   CapsulesRoute: typeof CapsulesRouteWithChildren
   CircleRoute: typeof CircleRoute
   DecoyRoute: typeof DecoyRoute
+  DexterRoute: typeof DexterRoute
   ProtocolRoute: typeof ProtocolRoute
   TriggersRoute: typeof TriggersRoute
   VerifyRoute: typeof VerifyRoute
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/decoy'
       fullPath: '/decoy'
       preLoaderRoute: typeof DecoyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dexter': {
+      id: '/dexter'
+      path: '/dexter'
+      fullPath: '/dexter'
+      preLoaderRoute: typeof DexterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/protocol': {
@@ -290,6 +310,7 @@ const rootRouteChildren: RootRouteChildren = {
   CapsulesRoute: CapsulesRouteWithChildren,
   CircleRoute: CircleRoute,
   DecoyRoute: DecoyRoute,
+  DexterRoute: DexterRoute,
   ProtocolRoute: ProtocolRoute,
   TriggersRoute: TriggersRoute,
   VerifyRoute: VerifyRoute,

@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Fingerprint,
   Home,
+  LineChart,
   Lock,
   Radio,
   ScrollText,
@@ -12,7 +13,7 @@ import { useActiveSession, useGuardianStore } from "@/lib/guardian/store";
 import { cn } from "@/lib/utils";
 
 type NavItem = {
-  to: "/" | "/session/new" | "/capsules" | "/circle" | "/protocol";
+  to: "/" | "/session/new" | "/capsules" | "/circle" | "/protocol" | "/dexter";
   label: string;
   icon: typeof Home;
   match: (p: string) => boolean;
@@ -41,10 +42,10 @@ const NAV: NavItem[] = [
     match: (p) => p.startsWith("/circle"),
   },
   {
-    to: "/protocol",
-    label: "Protocol",
-    icon: ScrollText,
-    match: (p) => p.startsWith("/protocol") || p.startsWith("/triggers"),
+    to: "/dexter",
+    label: "Dexter",
+    icon: LineChart,
+    match: (p) => p.startsWith("/dexter"),
   },
 ];
 
@@ -107,13 +108,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
-        <Link
-          to="/triggers"
-          className="mt-auto flex h-11 items-center gap-3 rounded-md px-3 text-sm text-muted hover:bg-elevated hover:text-fg"
-        >
-          <Fingerprint className="size-4" />
-          Triggers
-        </Link>
+        <div className="mt-auto space-y-1">
+          <Link
+            to="/protocol"
+            className={cn(
+              "flex h-11 items-center gap-3 rounded-md px-3 text-sm",
+              path.startsWith("/protocol")
+                ? "bg-elevated text-fg shadow-[var(--shadow-border)]"
+                : "text-muted hover:bg-elevated hover:text-fg",
+            )}
+          >
+            <ScrollText className="size-4" />
+            Protocol
+          </Link>
+          <Link
+            to="/triggers"
+            className={cn(
+              "flex h-11 items-center gap-3 rounded-md px-3 text-sm",
+              path.startsWith("/triggers")
+                ? "bg-elevated text-fg shadow-[var(--shadow-border)]"
+                : "text-muted hover:bg-elevated hover:text-fg",
+            )}
+          >
+            <Fingerprint className="size-4" />
+            Triggers
+          </Link>
+        </div>
       </aside>
 
       <header className="sticky top-0 z-20 flex items-center justify-between border-b border-border bg-bg/90 px-4 py-3 backdrop-blur-sm md:hidden">
