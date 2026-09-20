@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiRouteImport } from './routes/ai'
 import { Route as CampaignRouteImport } from './routes/campaign'
 import { Route as CapsulesRouteImport } from './routes/capsules'
 import { Route as CircleRouteImport } from './routes/circle'
@@ -27,6 +28,11 @@ import { Route as SessionNewRouteImport } from './routes/session/new'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiRoute = AiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampaignRoute = CampaignRouteImport.update({
@@ -97,6 +103,7 @@ const SessionNewRoute = SessionNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/campaign': typeof CampaignRoute
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/campaign': typeof CampaignRoute
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
@@ -129,6 +137,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/campaign': typeof CampaignRoute
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
@@ -147,6 +156,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai'
     | '/campaign'
     | '/capsules'
     | '/circle'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ai'
     | '/campaign'
     | '/circle'
     | '/decoy'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ai'
     | '/campaign'
     | '/capsules'
     | '/circle'
@@ -195,6 +207,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiRoute: typeof AiRoute
   CampaignRoute: typeof CampaignRoute
   CapsulesRoute: typeof CapsulesRouteWithChildren
   CircleRoute: typeof CircleRoute
@@ -215,6 +228,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai': {
+      id: '/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campaign': {
@@ -327,6 +347,7 @@ const CapsulesRouteWithChildren = CapsulesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiRoute: AiRoute,
   CampaignRoute: CampaignRoute,
   CapsulesRoute: CapsulesRouteWithChildren,
   CircleRoute: CircleRoute,

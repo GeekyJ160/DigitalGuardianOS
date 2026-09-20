@@ -94,7 +94,7 @@ function DecoyCalculator() {
         </div>
       </div>
       {active && (armedHere || covert) ? (
-        <span className="sr-only">Guardian is recording</span>
+        <span className="sr-only">Covert session armed in this preview</span>
       ) : null}
     </div>
   );

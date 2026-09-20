@@ -18,7 +18,7 @@ const STEPS = [
   {
     kicker: "Your circle. Your protocol.",
     title: "Stay protected. Preserve the truth.",
-    body: "If a check-in is missed, Guardian follows only the protocol you authorized — including dead-man evidence escrow.",
+    body: "If a check-in is missed, Guardian follows only the protocol you authorized — including dead-man evidence escrow. This prototype does not monitor you, encrypt a cloud vault, or call emergency services.",
   },
 ];
 

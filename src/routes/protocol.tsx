@@ -66,10 +66,10 @@ function Protocol() {
       <Card className="space-y-3 p-5">
         <h2 className="text-sm font-medium">Dead-man evidence escrow</h2>
         <p className="text-sm text-muted">
-          Sensitive records stay encrypted. Nobody in the Circle gets automatic
+          Sensitive records stay sealed. Nobody in the Circle gets automatic
           access. You define the release: two missed check-ins and the phone
-          offline. In this preview the offline window is compressed to 20
-          seconds so you can see it fire.
+          offline. This preview stores capsules on this device; the offline
+          window is compressed to 20 seconds so you can see it fire.
         </p>
         <p className="text-xs text-subtle">
           Default release: {contacts[0]?.name ?? "first Circle member"}.

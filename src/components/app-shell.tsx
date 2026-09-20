@@ -1,8 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
+  Bot,
   Fingerprint,
   Home,
-  LineChart,
   Lock,
   Radio,
   ScrollText,
@@ -13,7 +13,7 @@ import { useActiveSession, useGuardianStore } from "@/lib/guardian/store";
 import { cn } from "@/lib/utils";
 
 type NavItem = {
-  to: "/" | "/session/new" | "/capsules" | "/circle" | "/protocol" | "/dexter";
+  to: "/" | "/session/new" | "/capsules" | "/circle" | "/ai";
   label: string;
   icon: typeof Home;
   match: (p: string) => boolean;
@@ -42,10 +42,10 @@ const NAV: NavItem[] = [
     match: (p) => p.startsWith("/circle"),
   },
   {
-    to: "/dexter",
-    label: "Dexter",
-    icon: LineChart,
-    match: (p) => p.startsWith("/dexter"),
+    to: "/ai",
+    label: "GuardianAI",
+    icon: Bot,
+    match: (p) => p.startsWith("/ai") || p.startsWith("/dexter"),
   },
 ];
 
@@ -64,7 +64,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div>
             <div className="text-sm font-medium tracking-tight">GuardianOS</div>
             <div className="text-[10px] tracking-[0.16em] text-subtle uppercase">
-              {session ? "Recording" : "Standby"}
+              {session ? "Session active" : "Prototype"}
             </div>
           </div>
         </Link>
@@ -145,7 +145,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {session ? (
             <>
               <span className="size-1.5 rounded-full bg-live live-dot" />
-              Recording
+              Session active
             </>
           ) : (
             "Standby"

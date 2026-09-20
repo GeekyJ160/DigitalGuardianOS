@@ -39,9 +39,11 @@ export function LiveSession() {
   const simulateMissedCheckIn = useGuardianStore((s) => s.simulateMissedCheckIn);
   const simulateOffline = useGuardianStore((s) => s.simulateOffline);
   const simulateOnline = useGuardianStore((s) => s.simulateOnline);
+  const triggerSos = useGuardianStore((s) => s.triggerSos);
   const [note, setNote] = useState("");
   const [assessment, setAssessment] = useState<string | null>(null);
   const [assessing, setAssessing] = useState(false);
+  const [sosOpen, setSosOpen] = useState(false);
   const now = useNow(session && session.status !== "ended" ? 500 : null);
 
   if (!session) {
@@ -92,7 +94,7 @@ export function LiveSession() {
         },
       });
       if (res.ok) setAssessment(res.text);
-      else setAssessment(res.error);
+      else setAssessment("GuardianAI could not complete the assessment.");
     } catch {
       setAssessment("GuardianAI could not complete the assessment.");
     } finally {
@@ -142,10 +144,34 @@ export function LiveSession() {
               {prompting ? "I'm okay" : "Check in"}
             </Button>
             <Button variant="danger" onClick={onEnd}>
-              <ShieldAlert className="size-4" />
               End and seal capsule
             </Button>
+            <Button variant="outline" onClick={() => setSosOpen((v) => !v)}>
+              <ShieldAlert className="size-4" />
+              Need help now
+            </Button>
           </div>
+          {sosOpen ? (
+            <div className="mt-3 rounded-md bg-elevated p-3 text-xs text-muted">
+              <p>
+                This preview does not dispatch 911 or any emergency service. If
+                you need help now, call local emergency services or a trusted
+                person.
+              </p>
+              <Button
+                size="sm"
+                className="mt-3"
+                variant="danger"
+                onClick={() => {
+                  triggerSos(session.id);
+                  setSosOpen(false);
+                  toast("SOS recorded in this preview. Help was not dispatched.");
+                }}
+              >
+                Record SOS in this demo
+              </Button>
+            </div>
+          ) : null}
           <dl className="mt-5 grid grid-cols-3 gap-2 text-center text-xs">
             <div className="rounded-md bg-elevated px-2 py-3">
               <dt className="text-subtle">Battery</dt>
@@ -191,7 +217,7 @@ export function LiveSession() {
       <Card className="p-5">
         <h2 className="text-sm font-medium">Preserve a note</h2>
         <p className="mt-1 text-xs text-muted">
-          Notes are stored original. GuardianAI never rewrites them.
+          Notes stay as you wrote them. GuardianAI never rewrites them.
         </p>
         <form
           className="mt-3 flex gap-2"
