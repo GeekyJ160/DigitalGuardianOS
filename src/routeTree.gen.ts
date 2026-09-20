@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CampaignRouteImport } from './routes/campaign'
 import { Route as CapsulesRouteImport } from './routes/capsules'
 import { Route as CircleRouteImport } from './routes/circle'
 import { Route as DecoyRouteImport } from './routes/decoy'
@@ -26,6 +27,11 @@ import { Route as SessionNewRouteImport } from './routes/session/new'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampaignRoute = CampaignRouteImport.update({
+  id: '/campaign',
+  path: '/campaign',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CapsulesRoute = CapsulesRouteImport.update({
@@ -91,6 +97,7 @@ const SessionNewRoute = SessionNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/campaign': typeof CampaignRoute
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/campaign': typeof CampaignRoute
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
   '/dexter': typeof DexterRoute
@@ -121,6 +129,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/campaign': typeof CampaignRoute
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/campaign'
     | '/capsules'
     | '/circle'
     | '/decoy'
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/campaign'
     | '/circle'
     | '/decoy'
     | '/dexter'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/campaign'
     | '/capsules'
     | '/circle'
     | '/decoy'
@@ -183,6 +195,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CampaignRoute: typeof CampaignRoute
   CapsulesRoute: typeof CapsulesRouteWithChildren
   CircleRoute: typeof CircleRoute
   DecoyRoute: typeof DecoyRoute
@@ -202,6 +215,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campaign': {
+      id: '/campaign'
+      path: '/campaign'
+      fullPath: '/campaign'
+      preLoaderRoute: typeof CampaignRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/capsules': {
@@ -307,6 +327,7 @@ const CapsulesRouteWithChildren = CapsulesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CampaignRoute: CampaignRoute,
   CapsulesRoute: CapsulesRouteWithChildren,
   CircleRoute: CircleRoute,
   DecoyRoute: DecoyRoute,

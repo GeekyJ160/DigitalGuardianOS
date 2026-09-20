@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>GuardianOS — Briefing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0b0d;
+        --fg: #ecece8;
+        --muted: #9a9aa3;
+        --subtle: #6e6e76;
+        --accent: #c8ccd4;
+        --live: #c45c26;
+        --serif: "Newsreader", "Liberation Serif", Georgia, serif;
+        --sans: "IBM Plex Sans", "Liberation Sans", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: #000; }
+      .slide {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--sans);
+      }
+      .bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(10, 11, 13, 0.92) 0%,
+          rgba(10, 11, 13, 0.72) 42%,
+          rgba(10, 11, 13, 0.28) 70%,
+          rgba(10, 11, 13, 0.12) 100%
+        );
+      }
+      .scrim-center {
+        background: linear-gradient(
+          180deg,
+          rgba(10, 11, 13, 0.55) 0%,
+          rgba(10, 11, 13, 0.78) 55%,
+          rgba(10, 11, 13, 0.94) 100%
+        );
+      }
+      .scrim-full {
+        background: rgba(10, 11, 13, 0.88);
+      }
+      .content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        padding: 88px 96px;
+        display: flex;
+        flex-direction: column;
+      }
+      .mark {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: var(--accent);
+      }
+      .mark svg { width: 36px; height: 36px; }
+      .mark span {
+        font-size: 13px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--subtle);
+      }
+      .kicker {
+        font-size: 15px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--live);
+        font-weight: 500;
+      }
+      h1 {
+        font-family: var(--serif);
+        font-weight: 500;
+        letter-spacing: -0.03em;
+        line-height: 0.98;
+        font-size: 108px;
+        max-width: 14ch;
+      }
+      h1.mid { font-size: 76px; max-width: 16ch; }
+      h1.quote {
+        font-size: 58px;
+        max-width: 18ch;
+        line-height: 1.12;
+        font-style: italic;
+        font-weight: 400;
+      }
+      .lede {
+        margin-top: 28px;
+        font-size: 28px;
+        color: var(--muted);
+        max-width: 22ch;
+        line-height: 1.4;
+      }
+      .body {
+        margin-top: 24px;
+        font-size: 24px;
+        color: var(--muted);
+        max-width: 34ch;
+        line-height: 1.5;
+      }
+      .grow { flex: 1; }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        color: var(--subtle);
+        font-size: 14px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .verbs {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 18px;
+        margin-top: 64px;
+      }
+      .verb {
+        border-top: 1px solid rgba(200, 204, 212, 0.28);
+        padding-top: 18px;
+      }
+      .verb b {
+        display: block;
+        font-family: var(--serif);
+        font-size: 32px;
+        font-weight: 500;
+        color: var(--fg);
+      }
+      .verb span {
+        display: block;
+        margin-top: 8px;
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .list {
+        margin-top: 40px;
+        display: grid;
+        gap: 16px;
+        max-width: 520px;
+      }
+      .list li {
+        list-style: none;
+        font-size: 26px;
+        color: var(--fg);
+        padding-left: 22px;
+        border-left: 2px solid var(--live);
+        line-height: 1.3;
+      }
+      .list li em {
+        display: block;
+        font-style: normal;
+        font-size: 16px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .shot {
+        position: absolute;
+        right: 88px;
+        top: 160px;
+        width: 640px;
+        border-radius: 18px;
+        outline: 1px solid rgba(255, 255, 255, 0.1);
+        outline-offset: -1px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="slide" id="s1">
+      <img class="bg" src="img/capsule-stone.jpg" alt="" />
+      <div class="scrim"></div>
+      <div class="content">
+        <div class="mark">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <rect x="10" y="3" width="12" height="26" rx="6" fill="none" stroke="#c8ccd4" stroke-width="1.5" />
+            <rect x="13" y="8" width="6" height="1.5" rx="0.75" fill="#c8ccd4" />
+            <rect x="13" y="22.5" width="6" height="1.5" rx="0.75" fill="#c8ccd4" />
+            <circle cx="16" cy="16" r="2.2" fill="#c45c26" />
+          </svg>
+          <span>GuardianOS</span>
+        </div>
+        <div class="grow"></div>
+        <p class="kicker">The black box for your real life</p>
+        <h1 style="margin-top: 18px">Stay protected.<br />Preserve the truth.</h1>
+        <p class="lede">A personal safety and evidence operating system — not another SOS button.</p>
+        <div class="grow"></div>
+        <p class="foot"><span>Campaign briefing</span><span>01 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s2">
+      <img class="bg" src="img/night-street.jpg" alt="" />
+      <div class="scrim"></div>
+      <div class="content">
+        <p class="kicker">The gap</p>
+        <div class="grow"></div>
+        <h1 class="mid">The moments nobody knows will matter until they do.</h1>
+        <p class="body">
+          A late meeting. A first date. A rideshare across town. If something happens, investigators do not want guesses. They want the record.
+        </p>
+        <div class="grow"></div>
+        <p class="foot"><span>GuardianOS</span><span>02 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s3">
+      <img class="bg" src="img/night-street.jpg" alt="" />
+      <div class="scrim scrim-full"></div>
+      <div class="content">
+        <p class="kicker">White space</p>
+        <div class="grow"></div>
+        <h1 class="mid">Not a tracker.<br />Not a panic app.<br />A black box.</h1>
+        <ul class="list">
+          <li>Life360 shares location. We preserve facts.</li>
+          <li>Noonlight dispatches help. We also reconstruct what happened.</li>
+          <li>GuardianOS is Prevent · Detect · Preserve · Escalate · Reconstruct.</li>
+        </ul>
+        <div class="grow"></div>
+        <p class="foot"><span>GuardianOS</span><span>03 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s4">
+      <img class="bg" src="img/capsule-map.jpg" alt="" />
+      <div class="scrim scrim-center"></div>
+      <div class="content">
+        <p class="kicker">The operating system</p>
+        <h1 class="mid" style="margin-top: 20px">Five verbs. One capsule.</h1>
+        <p class="body">Every protected session writes an original, encrypted Guardian Capsule.</p>
+        <div class="verbs">
+          <div class="verb"><b>Prevent</b><span>Authorize the session before you go.</span></div>
+          <div class="verb"><b>Detect</b><span>Missed check-ins and route drift.</span></div>
+          <div class="verb"><b>Preserve</b><span>Location, notes, connectivity — original.</span></div>
+          <div class="verb"><b>Escalate</b><span>Only the protocol you wrote.</span></div>
+          <div class="verb"><b>Reconstruct</b><span>Observed events. Never a verdict.</span></div>
+        </div>
+        <div class="grow"></div>
+        <p class="foot"><span>GuardianOS</span><span>04 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s5">
+      <img class="bg" src="img/night-street.jpg" alt="" />
+      <div class="scrim"></div>
+      <div class="content">
+        <p class="kicker">Guardian Session</p>
+        <div class="grow"></div>
+        <h1 class="quote">“Guardian, I’m meeting someone at 9:00. If I don’t check in by 11:30, start my protocol.”</h1>
+        <p class="body">
+          From that moment it records authorized context — location, check-ins, battery, rideshare notes — and recognizes the rules you wrote. It does not decide if you are in danger.
+        </p>
+        <div class="grow"></div>
+        <p class="foot"><span>GuardianOS</span><span>05 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s6">
+      <img class="bg" src="img/capsule-map.jpg" alt="" />
+      <div class="scrim"></div>
+      <img class="shot" src="img/ui-vault.png" alt="Guardian Capsule vault" />
+      <div class="content">
+        <p class="kicker">The Capsule</p>
+        <div class="grow"></div>
+        <h1 class="mid">Original evidence.<br />No accusations.</h1>
+        <p class="body">
+          Breadcrumbs, check-ins, notes, and integrity hashes seal into a capsule. Chronologies say “observed event.” Never guilt. Never motive.
+        </p>
+        <div class="grow"></div>
+        <p class="foot"><span>GuardianOS</span><span>06 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s7">
+      <img class="bg" src="img/circle-lights.jpg" alt="" />
+      <div class="scrim"></div>
+      <img class="shot" src="img/ui-circle.png" alt="Circle contacts" />
+      <div class="content">
+        <p class="kicker">Circle · Protocol</p>
+        <div class="grow"></div>
+        <h1 class="mid">Your people.<br />Your rules.</h1>
+        <p class="body">
+          If a check-in is missed, Guardian follows only the protocol you authorized — including dead-man evidence escrow. No one else writes the playbook.
+        </p>
+        <div class="grow"></div>
+        <p class="foot"><span>GuardianOS</span><span>07 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s8">
+      <img class="bg" src="img/capsule-stone.jpg" alt="" />
+      <div class="scrim scrim-full"></div>
+      <div class="content">
+        <p class="kicker">When looking ordinary is the protocol</p>
+        <div class="grow"></div>
+        <h1 class="mid">Covert by design.</h1>
+        <ul class="list">
+          <li>PIN, phrase, and gesture triggers<em>Silent signals you rehearsed.</em></li>
+          <li>Decoy calculator<em>The screen that is allowed to be seen.</em></li>
+          <li>Dead-man escrow<em>Evidence moves only if you cannot.</em></li>
+        </ul>
+        <div class="grow"></div>
+        <p class="foot"><span>GuardianOS</span><span>08 / 09</span></p>
+      </div>
+    </section>
+
+    <section class="slide" id="s9">
+      <img class="bg" src="img/capsule-stone.jpg" alt="" />
+      <div class="scrim scrim-center"></div>
+      <div class="content" style="align-items: center; text-align: center">
+        <div class="mark">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <rect x="10" y="3" width="12" height="26" rx="6" fill="none" stroke="#c8ccd4" stroke-width="1.5" />
+            <rect x="13" y="8" width="6" height="1.5" rx="0.75" fill="#c8ccd4" />
+            <rect x="13" y="22.5" width="6" height="1.5" rx="0.75" fill="#c8ccd4" />
+            <circle cx="16" cy="16" r="2.2" fill="#c45c26" />
+          </svg>
+          <span>GuardianOS</span>
+        </div>
+        <div class="grow"></div>
+        <p class="kicker">Open the black box</p>
+        <h1 style="max-width: 16ch; margin-top: 18px">Stay protected.<br />Preserve the truth.</h1>
+        <p class="lede" style="max-width: 28ch">Start a Guardian Session. Write your protocol. Keep the record original.</p>
+        <div class="grow"></div>
+        <p class="foot" style="width: 100%"><span>Not an accusation engine</span><span>09 / 09</span></p>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cltr0gcK.js";import{T as t,d as n}from"./index-BCOJqkgr.js";var r=e();function i(){let e=n(e=>e.activeSessionId);return e?(0,r.jsx)(t,{to:`/session/$id`,params:{id:e}}):(0,r.jsx)(t,{to:`/session/new`})}export{i as component};

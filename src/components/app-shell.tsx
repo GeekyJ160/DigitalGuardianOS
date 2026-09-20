@@ -54,7 +54,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const session = useActiveSession();
   const liveId = useGuardianStore((s) => s.activeSessionId);
 
-  if (path === "/decoy") return <>{children}</>;
+  if (path === "/decoy" || path === "/campaign") return <>{children}</>;
 
   return (
     <div className="min-h-dvh bg-bg text-fg">

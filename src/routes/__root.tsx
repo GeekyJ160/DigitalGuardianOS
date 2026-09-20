@@ -3,6 +3,7 @@ import {
   HeadContent,
   Outlet,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
@@ -62,6 +63,11 @@ function Root() {
 
 function Boot({ children }: { children: React.ReactNode }) {
   const onboarded = useGuardianStore((s) => s.onboarded);
+  const path = useRouterState({ select: (s) => s.location.pathname });
+
+  if (path === "/campaign" || path === "/decoy") {
+    return <>{children}</>;
+  }
 
   if (!onboarded) return <Onboarding />;
 

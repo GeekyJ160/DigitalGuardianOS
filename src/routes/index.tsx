@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  Film,
   Fingerprint,
   LineChart,
   Lock,
@@ -104,6 +105,27 @@ function Home() {
         </div>
         <Button asChild>
           <Link to="/dexter">Open Dexter</Link>
+        </Button>
+      </Card>
+
+      <Card className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-xs tracking-[0.16em] text-subtle uppercase">
+            Campaign
+          </p>
+          <h2 className="mt-2 font-display text-2xl tracking-tight">
+            The briefing
+          </h2>
+          <p className="mt-2 max-w-lg text-sm text-muted">
+            Nine-slide pitch and a vertical reel. Stay protected. Preserve the
+            truth.
+          </p>
+        </div>
+        <Button asChild variant="secondary">
+          <Link to="/campaign">
+            <Film className="size-4" />
+            Watch / present
+          </Link>
         </Button>
       </Card>
 

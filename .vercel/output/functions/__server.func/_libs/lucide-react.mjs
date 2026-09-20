@@ -184,6 +184,16 @@ var Check = createLucideIcon("check", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ChevronLeft = createLucideIcon("chevron-left", [["path", {
+	d: "m15 18-6-6 6-6",
+	key: "1wnfg3"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var ChevronRight = createLucideIcon("chevron-right", [["path", {
 	d: "m9 18 6-6-6-6",
 	key: "mthhwq"
@@ -209,6 +219,50 @@ var Download = createLucideIcon("download", [
 		y1: "15",
 		y2: "3",
 		key: "1vk2je"
+	}]
+]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Film = createLucideIcon("film", [
+	["rect", {
+		width: "18",
+		height: "18",
+		x: "3",
+		y: "3",
+		rx: "2",
+		key: "afitv7"
+	}],
+	["path", {
+		d: "M7 3v18",
+		key: "bbkbws"
+	}],
+	["path", {
+		d: "M3 7.5h4",
+		key: "zfgn84"
+	}],
+	["path", {
+		d: "M3 12h18",
+		key: "1i2n21"
+	}],
+	["path", {
+		d: "M3 16.5h4",
+		key: "1230mu"
+	}],
+	["path", {
+		d: "M17 3v18",
+		key: "in4fa5"
+	}],
+	["path", {
+		d: "M17 7.5h4",
+		key: "myr1c1"
+	}],
+	["path", {
+		d: "M17 16.5h4",
+		key: "go4c1d"
 	}]
 ]);
 /**
@@ -385,6 +439,26 @@ var Plus = createLucideIcon("plus", [["path", {
 	d: "M12 5v14",
 	key: "s699le"
 }]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Presentation = createLucideIcon("presentation", [
+	["path", {
+		d: "M2 3h20",
+		key: "91anmk"
+	}],
+	["path", {
+		d: "M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3",
+		key: "2k9sn8"
+	}],
+	["path", {
+		d: "m7 21 5-5 5 5",
+		key: "bip4we"
+	}]
+]);
 /**
 * @license lucide-react v0.510.0 - ISC
 *
@@ -626,4 +700,4 @@ var Wifi = createLucideIcon("wifi", [
 	}]
 ]);
 //#endregion
-export { Battery as S, Download as _, TriangleAlert as a, ChartLine as b, ScrollText as c, Mic as d, MapPin as f, Fingerprint as g, House as h, Users as i, Radio as l, Keyboard as m, WifiOff as n, Trash2 as o, Lock as p, Watch as r, ShieldAlert as s, Wifi as t, Plus as u, ChevronRight as v, Calculator as x, Check as y };
+export { ChartLine as C, Check as S, Battery as T, Fingerprint as _, TriangleAlert as a, ChevronRight as b, ScrollText as c, Plus as d, Mic as f, House as g, Keyboard as h, Users as i, Radio as l, Lock as m, WifiOff as n, Trash2 as o, MapPin as p, Watch as r, ShieldAlert as s, Wifi as t, Presentation as u, Film as v, Calculator as w, ChevronLeft as x, Download as y };
