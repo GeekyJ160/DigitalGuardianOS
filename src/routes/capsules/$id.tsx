@@ -55,9 +55,13 @@ export function CapsuleDetail() {
       });
       if (res.ok) {
         saveChronology(capsule.id, res.text);
-        toast("Chronology written from original records");
+        toast(
+          res.source === "local"
+            ? "Chronology written from original records on this device"
+            : "Chronology written from original records",
+        );
       } else {
-        toast(res.error);
+        toast("GuardianAI could not complete the chronology.");
       }
     } catch {
       toast("GuardianAI could not complete the chronology.");
@@ -81,7 +85,7 @@ export function CapsuleDetail() {
       },
       checks: {
         locationData: capsule.breadcrumbs.length > 0,
-        originalMediaHashes: capsule.eventHashes.length > 0,
+        eventFingerprints: capsule.eventHashes.length > 0,
         deviceTimestamps: true,
         checkInRecords: capsule.events.some((e) =>
           e.kind.startsWith("checkin"),
@@ -112,7 +116,7 @@ export function CapsuleDetail() {
 
   const checks = [
     { label: "Location data", ok: capsule.breadcrumbs.length > 0 },
-    { label: "Original media hashes", ok: capsule.eventHashes.length > 0 },
+    { label: "Event fingerprints", ok: capsule.eventHashes.length > 0 },
     { label: "Device timestamps", ok: true },
     {
       label: "Check-in records",
@@ -171,7 +175,8 @@ export function CapsuleDetail() {
         ) : (
           <p className="text-sm text-muted">
             Reconstruct a human-readable chronology from the original records.
-            GuardianAI will not add inferences.
+            GuardianAI will not add inferences. If the model is unavailable, the
+            chronology is written from the event labels on this device.
           </p>
         )}
       </Card>
@@ -215,7 +220,8 @@ export function CapsuleDetail() {
             </div>
             <p className="mt-2 text-xs text-muted">
               If two check-ins fail and the device stays offline, access goes to{" "}
-              {escrowName}. Taking the phone does not erase the record.
+              {escrowName}. In production, an escrow copy would outlive the
+              phone. This preview keeps the capsule on this device.
             </p>
             {capsule.escrow.enabled && !capsule.escrow.released ? (
               <Button

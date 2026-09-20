@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { uid } from "../utils";
-import { eventCanonical, fingerprint } from "./hash";
-import { kindTitle } from "./kinds";
 import {
   DEVIATION_PATH,
   DEST_POINT,
@@ -14,30 +12,24 @@ import {
   SEED_TRIGGERS,
   seedCapsules,
 } from "./seed";
+import {
+  applyCheckIn,
+  applySos,
+  createSession,
+  notifyCircle,
+  observed,
+  sealCapsule,
+  type StartSessionInput,
+} from "./session-ops";
 import type {
-  Capsule,
-  CircleNotice,
   Contact,
-  DexterMemo,
   EventKind,
   GuardianState,
   ObservedEvent,
   ProtocolStep,
   Session,
-  SessionKind,
   TriggerConfig,
 } from "./types";
-
-type StartSessionInput = {
-  kind: SessionKind;
-  destination: string;
-  meetingWith: string;
-  durationMs: number;
-  checkInEveryMs: number;
-  escrowEnabled: boolean;
-  escrowContactId: string;
-  covert?: boolean;
-};
 
 type GuardianActions = {
   completeOnboarding: (name?: string) => void;
@@ -65,23 +57,14 @@ type GuardianActions = {
   simulateOffline: () => void;
   simulateOnline: () => void;
   triggerCovert: (source: "pin" | "phrase" | "gesture" | "watch") => string;
+  triggerSos: (sessionId?: string) => void;
   saveChronology: (capsuleId: string, text: string) => void;
   releaseEscrow: (capsuleId: string) => void;
   addNote: (text: string) => void;
-  saveDexterMemo: (memo: Omit<DexterMemo, "id" | "createdAt">) => string;
-  removeDexterMemo: (id: string) => void;
+  resetPreview: () => void;
 };
 
 type Store = GuardianState & GuardianActions;
-
-function observed(
-  kind: EventKind,
-  label: string,
-  detail?: string,
-  meta?: ObservedEvent["meta"],
-): ObservedEvent {
-  return { id: uid(), at: Date.now(), kind, label, detail, meta };
-}
 
 function lerpPath(
   path: [number, number][],
@@ -98,59 +81,6 @@ function lerpPath(
   return { x: a[0] + (b[0] - a[0]) * f, y: a[1] + (b[1] - a[1]) * f };
 }
 
-function notifyCircle(
-  contacts: Contact[],
-  kind: EventKind,
-  message: string,
-): CircleNotice[] {
-  const map: Record<string, Contact["notifyOn"][number] | null> = {
-    checkin_missed: "missed_checkin",
-    route_deviation: "deviation",
-    connectivity_lost: "offline",
-    sos: "sos",
-    escrow_released: "escrow",
-    covert_trigger: "sos",
-  };
-  const flag = map[kind];
-  if (!flag) return [];
-  return contacts
-    .filter((c) => c.notifyOn.includes(flag))
-    .map((c) => ({
-      id: uid(),
-      at: Date.now(),
-      contactId: c.id,
-      contactName: c.name,
-      message,
-      eventKind: kind,
-    }));
-}
-
-function sealCapsule(session: Session, escrow: Capsule["escrow"]): Capsule {
-  const events = session.events;
-  const eventHashes = events.map((e) => ({
-    eventId: e.id,
-    hash: fingerprint(eventCanonical(e)),
-  }));
-  const integrityHash = fingerprint(
-    session.id + eventHashes.map((h) => h.hash).join(""),
-  );
-  return {
-    id: `capsule-${session.id}`,
-    sessionId: session.id,
-    createdAt: session.startedAt,
-    sealedAt: Date.now(),
-    title: session.title,
-    kind: session.kind,
-    destination: session.destination,
-    events,
-    breadcrumbs: session.breadcrumbs,
-    eventHashes,
-    integrityHash,
-    escrow,
-    original: true,
-  };
-}
-
 const initial = (): GuardianState => ({
   onboarded: false,
   displayName: "",
@@ -162,7 +92,6 @@ const initial = (): GuardianState => ({
   protocol: SEED_PROTOCOL,
   notices: [],
   offlineSince: null,
-  dexterMemos: [],
 });
 
 export const useGuardianStore = create<Store>()(
@@ -204,54 +133,12 @@ export const useGuardianStore = create<Store>()(
             get().endSession(existing);
           }
         }
-        const id = uid();
-        const now = Date.now();
-        const title = input.destination
-          ? `${kindTitle(input.kind)} — ${input.destination}`
-          : kindTitle(input.kind);
-        const startEvent = observed(
-          "session_started",
-          "Session started",
-          `${title}. Check-in every ${Math.round(input.checkInEveryMs / 1000)}s in this preview (shortened).`,
-          { covert: Boolean(input.covert) },
-        );
-        const session: Session = {
-          id,
-          kind: input.kind,
-          title,
-          destination: input.destination,
-          meetingWith: input.meetingWith,
-          startedAt: now,
-          expectedEndAt: now + input.durationMs,
-          checkInEveryMs: input.checkInEveryMs,
-          nextCheckInAt: now + input.checkInEveryMs,
-          confirmUntil: null,
-          missedCheckins: 0,
-          status: "active",
-          protocolFired: false,
-          events: [startEvent],
-          breadcrumbs: [{ t: now, x: HOME_POINT.x, y: HOME_POINT.y }],
-          battery: 87,
-          online: true,
-          notes: [],
-          pathProgress: 0,
-          arrived: false,
-          departed: false,
-          deviated: false,
-          covert: Boolean(input.covert),
-          escrow: {
-            enabled: input.escrowEnabled,
-            contactId: input.escrowContactId,
-            missedCheckins: 2,
-            offlineMs: 20_000,
-            released: false,
-          },
-        };
+        const session = createSession(input);
         set({
           sessions: [session, ...get().sessions],
-          activeSessionId: id,
+          activeSessionId: session.id,
         });
-        return id;
+        return session.id;
       },
 
       addEvent: (sessionId, kind, label, detail, meta) => {
@@ -266,23 +153,9 @@ export const useGuardianStore = create<Store>()(
       checkIn: (sessionId) => {
         const id = sessionId ?? get().activeSessionId;
         if (!id) return;
-        const now = Date.now();
-        const ev = observed(
-          "checkin_ok",
-          "Check-in received",
-          "User confirmed within the authorized window.",
-        );
         set({
           sessions: get().sessions.map((s) =>
-            s.id === id
-              ? {
-                  ...s,
-                  events: [...s.events, ev],
-                  nextCheckInAt: now + s.checkInEveryMs,
-                  confirmUntil: null,
-                  status: s.status === "alert" && !s.deviated ? "active" : s.status,
-                }
-              : s,
+            s.id === id ? applyCheckIn(s) : s,
           ),
         });
       },
@@ -477,7 +350,7 @@ export const useGuardianStore = create<Store>()(
         const endEv = observed(
           "session_ended",
           "Session sealed",
-          "Capsule written with original files. No inferences attached.",
+          "Capsule written with original observed events. No inferences attached.",
         );
         const ended: Session = {
           ...session,
@@ -683,6 +556,20 @@ export const useGuardianStore = create<Store>()(
         return id;
       },
 
+      triggerSos: (sessionId) => {
+        const id = sessionId ?? get().activeSessionId;
+        if (!id) return;
+        const session = get().sessions.find((s) => s.id === id);
+        if (!session || session.status === "ended") return;
+        const result = applySos(session, get().contacts);
+        set({
+          notices: [...result.notices, ...get().notices],
+          sessions: get().sessions.map((s) =>
+            s.id === id ? result.session : s,
+          ),
+        });
+      },
+
       saveChronology: (capsuleId, text) =>
         set({
           capsules: get().capsules.map((c) =>
@@ -743,21 +630,7 @@ export const useGuardianStore = create<Store>()(
         });
       },
 
-      saveDexterMemo: (memo) => {
-        const id = uid();
-        const row: DexterMemo = {
-          id,
-          createdAt: Date.now(),
-          ...memo,
-        };
-        set({ dexterMemos: [row, ...(get().dexterMemos ?? [])].slice(0, 20) });
-        return id;
-      },
-
-      removeDexterMemo: (id) =>
-        set({
-          dexterMemos: (get().dexterMemos ?? []).filter((m) => m.id !== id),
-        }),
+      resetPreview: () => set(initial()),
     }),
     {
       name: "guardianos-v1",
@@ -776,7 +649,6 @@ export const useGuardianStore = create<Store>()(
         return {
           ...current,
           ...p,
-          dexterMemos: p.dexterMemos ?? [],
         };
       },
       partialize: (s) => ({
@@ -790,7 +662,6 @@ export const useGuardianStore = create<Store>()(
         protocol: s.protocol,
         notices: s.notices,
         offlineSince: s.offlineSince,
-        dexterMemos: s.dexterMemos ?? [],
       }),
     },
   ),

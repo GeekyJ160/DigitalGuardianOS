@@ -135,14 +135,6 @@ export type CircleNotice = {
   eventKind: EventKind;
 };
 
-export type DexterMemo = {
-  id: string;
-  query: string;
-  createdAt: number;
-  memo: string;
-  citations: string[];
-};
-
 export type GuardianState = {
   onboarded: boolean;
   displayName: string;
@@ -154,5 +146,4 @@ export type GuardianState = {
   protocol: ProtocolStep[];
   notices: CircleNotice[];
   offlineSince: number | null;
-  dexterMemos: DexterMemo[];
 };
