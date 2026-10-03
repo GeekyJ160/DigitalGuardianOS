@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
   assessFacts,
   buildChronology,
+  clipPrompt,
   replyToGuardian,
 } from "./local-ai.ts";
 
@@ -57,5 +58,19 @@ describe("replyToGuardian", () => {
     const text = replyToGuardian("I feel unsafe");
     assert.match(text, /does not dispatch 911/);
     assert.match(text, /local emergency services/);
+  });
+
+  it("prioritizes distress language over date setup", () => {
+    const text = replyToGuardian("I'm on a date and I feel unsafe");
+    assert.match(text, /local emergency services/);
+    assert.match(text, /does not dispatch 911/);
+    assert.doesNotMatch(text, /Start a Date Session/i);
+  });
+});
+
+describe("clipPrompt", () => {
+  it("trims and bounds visitor text", () => {
+    assert.equal(clipPrompt("  hi  "), "hi");
+    assert.equal(clipPrompt("a".repeat(500)).length, 480);
   });
 });

@@ -62,11 +62,22 @@ export type GuardianChatContext = {
   active?: boolean;
 };
 
+export const MAX_PROMPT_CHARS = 480;
+
+export function clipPrompt(text: string, max = MAX_PROMPT_CHARS): string {
+  const trimmed = text.trim();
+  if (trimmed.length <= max) return trimmed;
+  return trimmed.slice(0, max);
+}
+
 export function replyToGuardian(
   text: string,
   ctx: GuardianChatContext = {},
 ): string {
   const lower = text.toLowerCase();
+  if (/unsafe|scared|in danger|help me|not comfortable/.test(lower)) {
+    return "You can stop the session, contact a Guardian, move to a public staffed place, or call local emergency services. I can organize session facts. I cannot decide what you are experiencing. This preview does not dispatch 911.";
+  }
   if (/facebook|hinge|tinder|date|meeting someone/.test(lower)) {
     return "Date session: check-ins, arrival context, a Primary Guardian, and a sealed capsule if the window ends. I will not decide if anyone is safe. Start a Date Session when you are ready.";
   }
@@ -82,9 +93,6 @@ export function replyToGuardian(
       ? ` Planned destination: ${ctx.destination}.`
       : "";
     return `Open Timeline for the last verified signal.${dest} This preview cannot locate you. If you need help now, contact your Circle or local emergency services.`;
-  }
-  if (/unsafe|scared|in danger|help me|not comfortable/.test(lower)) {
-    return "You can stop the session, contact a Guardian, move to a public staffed place, or call local emergency services. I can organize session facts. I cannot decide what you are experiencing. This preview does not dispatch 911.";
   }
   if (/\b(i'?m okay|i am okay|i'?m fine|im fine|all good)\b/.test(lower)) {
     return "Recorded as a user-confirmed status in this prototype. Use Check in on a live session to put it on the timeline.";

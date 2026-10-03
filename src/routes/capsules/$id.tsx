@@ -9,6 +9,8 @@ import { BreadcrumbMap } from "@/components/breadcrumb-map";
 import { CapsuleObject } from "@/components/capsule-mark";
 import { Timeline } from "@/components/timeline";
 import { reconstructChronology } from "@/lib/guardian/ai";
+import { buildChronology } from "@/lib/guardian/local-ai";
+import { remoteAiAvailable } from "@/lib/guardian/remote-ai";
 import { useGuardianStore } from "@/lib/guardian/store";
 import { formatDateTime, formatTime, shortHash } from "@/lib/utils";
 
@@ -40,7 +42,19 @@ export function CapsuleDetail() {
 
   const onReconstruct = async () => {
     setWorking(true);
+    const local = buildChronology(
+      capsule.events.map((e) => ({
+        at: formatTime(e.at),
+        label: e.label,
+      })),
+    );
     try {
+      const useRemote = await remoteAiAvailable();
+      if (!useRemote) {
+        saveChronology(capsule.id, local);
+        toast("Chronology written from original records on this device");
+        return;
+      }
       const res = await reconstructChronology({
         data: {
           title: capsule.title,
@@ -61,10 +75,12 @@ export function CapsuleDetail() {
             : "Chronology written from original records",
         );
       } else {
-        toast("GuardianAI could not complete the chronology.");
+        saveChronology(capsule.id, local);
+        toast("Chronology written from original records on this device");
       }
     } catch {
-      toast("GuardianAI could not complete the chronology.");
+      saveChronology(capsule.id, local);
+      toast("Chronology written from original records on this device");
     } finally {
       setWorking(false);
     }

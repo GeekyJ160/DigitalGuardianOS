@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { askGuardian } from "@/lib/guardian/ai";
-import { replyToGuardian } from "@/lib/guardian/local-ai";
+import { clipPrompt, replyToGuardian } from "@/lib/guardian/local-ai";
+import { remoteAiAvailable } from "@/lib/guardian/remote-ai";
 import { useActiveSession, useGuardianStore } from "@/lib/guardian/store";
 import { cn } from "@/lib/utils";
 
@@ -42,12 +43,18 @@ function GuardianAI() {
   };
 
   const ask = async (raw: string) => {
-    const text = raw.trim();
+    const text = clipPrompt(raw);
     if (!text || working) return;
     setWorking(true);
     setMessages((rows) => [...rows, { from: "you", text }]);
     setInput("");
+    const local = replyToGuardian(text, ctx);
     try {
+      const useRemote = await remoteAiAvailable();
+      if (!useRemote) {
+        setMessages((rows) => [...rows, { from: "ai", text: local }]);
+        return;
+      }
       const res = await askGuardian({
         data: {
           text,
@@ -57,13 +64,10 @@ function GuardianAI() {
           active: ctx.active,
         },
       });
-      const reply = res.ok ? res.text : replyToGuardian(text, ctx);
+      const reply = res.ok ? res.text : local;
       setMessages((rows) => [...rows, { from: "ai", text: reply }]);
     } catch {
-      setMessages((rows) => [
-        ...rows,
-        { from: "ai", text: replyToGuardian(text, ctx) },
-      ]);
+      setMessages((rows) => [...rows, { from: "ai", text: local }]);
     } finally {
       setWorking(false);
     }

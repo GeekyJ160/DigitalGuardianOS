@@ -10,6 +10,8 @@ import { BreadcrumbMap } from "@/components/breadcrumb-map";
 import { CheckInRing } from "@/components/check-in-ring";
 import { Timeline } from "@/components/timeline";
 import { assessSession } from "@/lib/guardian/ai";
+import { assessFacts } from "@/lib/guardian/local-ai";
+import { remoteAiAvailable } from "@/lib/guardian/remote-ai";
 import { useGuardianStore } from "@/lib/guardian/store";
 import { formatDateTime, formatDuration } from "@/lib/utils";
 
@@ -85,7 +87,17 @@ export function LiveSession() {
       `Battery: ${Math.round(session.battery)}%`,
       `Elapsed: ${formatDuration(now - session.startedAt)}`,
     ];
+    const local = assessFacts({
+      title: session.title,
+      expectedEnd: formatDateTime(session.expectedEndAt),
+      facts,
+    });
     try {
+      const useRemote = await remoteAiAvailable();
+      if (!useRemote) {
+        setAssessment(local);
+        return;
+      }
       const res = await assessSession({
         data: {
           title: session.title,
@@ -94,9 +106,9 @@ export function LiveSession() {
         },
       });
       if (res.ok) setAssessment(res.text);
-      else setAssessment("GuardianAI could not complete the assessment.");
+      else setAssessment(local);
     } catch {
-      setAssessment("GuardianAI could not complete the assessment.");
+      setAssessment(local);
     } finally {
       setAssessing(false);
     }
