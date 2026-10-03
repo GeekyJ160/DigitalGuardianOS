@@ -72,6 +72,9 @@ function Campaign() {
         </div>
         <div className="flex gap-2">
           <Button asChild size="sm" variant="secondary">
+            <Link to="/digitalguardian">Demo</Link>
+          </Button>
+          <Button asChild size="sm" variant="secondary">
             <a href="/campaign/GuardianOS-campaign.pptx" download>
               <Download className="size-3.5" />
               PPTX

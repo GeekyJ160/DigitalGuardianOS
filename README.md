@@ -10,7 +10,7 @@ A prototype personal safety black box: authorize a session, record observed fact
 - **Capsules** — Device-local records with event fingerprints and a fact-package export. Not encrypted cloud storage.
 - **GuardianAI** — Prepares, explains, and reconstructs chronologies from labels. Falls back to on-device reconstruction if a model key is missing.
 - **Covert triggers** — Phrase, decoy calculator PIN, key gesture, watch test. Preview-only.
-- **SOS** — Records a demo event and tells you to call 911. Nothing is dispatched.
+- **Public demo** — `/digitalguardian` records an SOS fact and seals a device-local capsule. No live location. Nothing is dispatched.
 
 ## Run
 
