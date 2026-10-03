@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  Bot,
   Film,
   Fingerprint,
-  LineChart,
   Lock,
   Radio,
   ScrollText,
@@ -40,8 +40,9 @@ function Home() {
               : "Stay protected. Preserve the truth."}
         </h1>
         <p className="max-w-xl text-sm text-muted">
-          GuardianOS is the black box for the hours that look ordinary until they
-          are not. It records facts. It does not decide what they mean.
+          GuardianOS is a prototype black box for the hours that look ordinary
+          until they are not. It records facts you authorize. It does not
+          decide what they mean, monitor you live, or dispatch help.
         </p>
       </header>
 
@@ -54,7 +55,7 @@ function Home() {
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <Badge variant="live">Recording</Badge>
+                <Badge variant="live">Session active</Badge>
                 {session.covert ? <Badge>Covert</Badge> : null}
               </div>
               <p className="mt-2 text-sm text-muted">
@@ -80,9 +81,9 @@ function Home() {
             Start a Guardian Session
           </h2>
           <p className="mt-2 max-w-lg text-sm text-muted">
-            Date, ride, showing, nightlife, or custom. From that moment Guardian
-            tracks the context you authorized — then writes a capsule if anything
-            diverges from the plan.
+            Date, ride, showing, nightlife, or custom. From that moment this
+            preview simulates the context you authorized, then writes a capsule
+            of observed events if the plan diverges.
           </p>
           <Button asChild className="mt-5">
             <Link to="/session/new">Start session</Link>
@@ -93,18 +94,18 @@ function Home() {
       <Card className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-xs tracking-[0.16em] text-subtle uppercase">
-            Dexter skill · on
+            GuardianAI
           </p>
           <h2 className="mt-2 font-display text-2xl tracking-tight">
-            Financial research, planned and sourced
+            Prepare, explain, coordinate
           </h2>
           <p className="mt-2 max-w-lg text-sm text-muted">
-            Dexter decomposes the question, searches live markets, checks the
-            numbers, and files a memo. It does not advise a trade.
+            Ask about a session, a signal, or a next step. GuardianAI organizes
+            facts. It will not infer danger or call emergency services.
           </p>
         </div>
         <Button asChild>
-          <Link to="/dexter">Open Dexter</Link>
+          <Link to="/ai">Open GuardianAI</Link>
         </Button>
       </Card>
 
@@ -139,7 +140,7 @@ function Home() {
         />
         <QuickLink to="/triggers" icon={Fingerprint} label="Triggers" meta="PIN · phrase · gesture" />
         <QuickLink to="/protocol" icon={ScrollText} label="Protocol" meta="Escrow rules" />
-        <QuickLink to="/dexter" icon={LineChart} label="Dexter" meta="Research desk" />
+        <QuickLink to="/ai" icon={Bot} label="GuardianAI" meta="Ask in facts" />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-5">
@@ -186,8 +187,8 @@ function Home() {
       </section>
 
       <p className="text-xs text-subtle">
-        This preview simulates observation and evidence assembly. It does not
-        dispatch emergency services.
+        Prototype · not monitored. Capsules stay on this device. SOS does not
+        dispatch 911 or any emergency service.
       </p>
     </div>
   );
@@ -199,7 +200,7 @@ function QuickLink({
   label,
   meta,
 }: {
-  to: "/circle" | "/capsules" | "/triggers" | "/protocol" | "/dexter";
+  to: "/circle" | "/capsules" | "/triggers" | "/protocol" | "/ai";
   icon: typeof Radio;
   label: string;
   meta: string;

@@ -65,7 +65,7 @@ function Boot({ children }: { children: React.ReactNode }) {
   const onboarded = useGuardianStore((s) => s.onboarded);
   const path = useRouterState({ select: (s) => s.location.pathname });
 
-  if (path === "/campaign" || path === "/decoy") {
+  if (path === "/campaign" || path === "/decoy" || path === "/digitalguardian") {
     return <>{children}</>;
   }
 

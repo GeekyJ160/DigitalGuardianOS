@@ -22,8 +22,9 @@ function Vault() {
             Guardian Capsules
           </h1>
           <p className="max-w-xl text-sm text-muted">
-            Each protected session writes an encrypted capsule of original files —
-            hashes, timestamps, and observed events. Nothing is inferred.
+            Each protected session writes a sealed capsule of original records —
+            fingerprints, timestamps, and observed events. This preview stores
+            them on this device. Nothing is inferred.
           </p>
         </div>
         <Link to="/verify" className="text-sm text-muted hover:text-fg">

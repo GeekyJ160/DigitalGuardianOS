@@ -105,7 +105,7 @@ export function seedCapsules(now = Date.now()): Capsule[] {
     event(start + 59 * 60_000, "location_update", "Device began moving north", "Heading changed after a stationary period."),
     event(start + 64 * 60_000, "route_deviation", "Route deviated from expected destination", "Path no longer aligned with the return route home."),
     event(start + 67 * 60_000, "circle_notified", "Guardian Circle notified", "Maya Chen and Jordan Hale received the missed-check-in protocol."),
-    event(start + 70 * 60_000, "session_ended", "Session sealed", "Capsule written with original files. No inferences attached."),
+    event(start + 70 * 60_000, "session_ended", "Session sealed", "Capsule written with original observed events. No inferences attached."),
   ];
 
   const dateSeal = seal(dateEvents, "date-west7th");
@@ -116,7 +116,7 @@ export function seedCapsules(now = Date.now()): Capsule[] {
     event(nightlifeStart + 40 * 60_000, "checkin_ok", "Check-in received", "User confirmed on time."),
     event(nightlifeStart + 80 * 60_000, "checkin_ok", "Check-in received", "User confirmed on time."),
     event(nightlifeStart + 110 * 60_000, "location_update", "Device moving toward home", "Path aligned with the expected return route."),
-    event(nightlifeStart + 128 * 60_000, "session_ended", "Session sealed", "All authorized check-ins were received. Capsule archived."),
+    event(nightlifeStart + 128 * 60_000, "session_ended", "Session sealed", "All authorized check-ins were received. Capsule archived on this device."),
   ];
   const nightSeal = seal(nightEvents, "nightlife-southside");
 

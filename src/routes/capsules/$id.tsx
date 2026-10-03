@@ -9,6 +9,8 @@ import { BreadcrumbMap } from "@/components/breadcrumb-map";
 import { CapsuleObject } from "@/components/capsule-mark";
 import { Timeline } from "@/components/timeline";
 import { reconstructChronology } from "@/lib/guardian/ai";
+import { buildChronology } from "@/lib/guardian/local-ai";
+import { remoteAiAvailable } from "@/lib/guardian/remote-ai";
 import { useGuardianStore } from "@/lib/guardian/store";
 import { formatDateTime, formatTime, shortHash } from "@/lib/utils";
 
@@ -40,7 +42,19 @@ export function CapsuleDetail() {
 
   const onReconstruct = async () => {
     setWorking(true);
+    const local = buildChronology(
+      capsule.events.map((e) => ({
+        at: formatTime(e.at),
+        label: e.label,
+      })),
+    );
     try {
+      const useRemote = await remoteAiAvailable();
+      if (!useRemote) {
+        saveChronology(capsule.id, local);
+        toast("Chronology written from original records on this device");
+        return;
+      }
       const res = await reconstructChronology({
         data: {
           title: capsule.title,
@@ -55,12 +69,18 @@ export function CapsuleDetail() {
       });
       if (res.ok) {
         saveChronology(capsule.id, res.text);
-        toast("Chronology written from original records");
+        toast(
+          res.source === "local"
+            ? "Chronology written from original records on this device"
+            : "Chronology written from original records",
+        );
       } else {
-        toast(res.error);
+        saveChronology(capsule.id, local);
+        toast("Chronology written from original records on this device");
       }
     } catch {
-      toast("GuardianAI could not complete the chronology.");
+      saveChronology(capsule.id, local);
+      toast("Chronology written from original records on this device");
     } finally {
       setWorking(false);
     }
@@ -81,7 +101,7 @@ export function CapsuleDetail() {
       },
       checks: {
         locationData: capsule.breadcrumbs.length > 0,
-        originalMediaHashes: capsule.eventHashes.length > 0,
+        eventFingerprints: capsule.eventHashes.length > 0,
         deviceTimestamps: true,
         checkInRecords: capsule.events.some((e) =>
           e.kind.startsWith("checkin"),
@@ -112,7 +132,7 @@ export function CapsuleDetail() {
 
   const checks = [
     { label: "Location data", ok: capsule.breadcrumbs.length > 0 },
-    { label: "Original media hashes", ok: capsule.eventHashes.length > 0 },
+    { label: "Event fingerprints", ok: capsule.eventHashes.length > 0 },
     { label: "Device timestamps", ok: true },
     {
       label: "Check-in records",
@@ -171,7 +191,8 @@ export function CapsuleDetail() {
         ) : (
           <p className="text-sm text-muted">
             Reconstruct a human-readable chronology from the original records.
-            GuardianAI will not add inferences.
+            GuardianAI will not add inferences. If the model is unavailable, the
+            chronology is written from the event labels on this device.
           </p>
         )}
       </Card>
@@ -215,7 +236,8 @@ export function CapsuleDetail() {
             </div>
             <p className="mt-2 text-xs text-muted">
               If two check-ins fail and the device stays offline, access goes to{" "}
-              {escrowName}. Taking the phone does not erase the record.
+              {escrowName}. In production, an escrow copy would outlive the
+              phone. This preview keeps the capsule on this device.
             </p>
             {capsule.escrow.enabled && !capsule.escrow.released ? (
               <Button

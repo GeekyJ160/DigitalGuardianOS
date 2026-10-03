@@ -10,11 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiRouteImport } from './routes/ai'
 import { Route as CampaignRouteImport } from './routes/campaign'
 import { Route as CapsulesRouteImport } from './routes/capsules'
 import { Route as CircleRouteImport } from './routes/circle'
 import { Route as DecoyRouteImport } from './routes/decoy'
 import { Route as DexterRouteImport } from './routes/dexter'
+import { Route as DigitalguardianRouteImport } from './routes/digitalguardian'
 import { Route as ProtocolRouteImport } from './routes/protocol'
 import { Route as TriggersRouteImport } from './routes/triggers'
 import { Route as VerifyRouteImport } from './routes/verify'
@@ -27,6 +29,11 @@ import { Route as SessionNewRouteImport } from './routes/session/new'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiRoute = AiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampaignRoute = CampaignRouteImport.update({
@@ -52,6 +59,11 @@ const DecoyRoute = DecoyRouteImport.update({
 const DexterRoute = DexterRouteImport.update({
   id: '/dexter',
   path: '/dexter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DigitalguardianRoute = DigitalguardianRouteImport.update({
+  id: '/digitalguardian',
+  path: '/digitalguardian',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtocolRoute = ProtocolRouteImport.update({
@@ -97,11 +109,13 @@ const SessionNewRoute = SessionNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/campaign': typeof CampaignRoute
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
   '/dexter': typeof DexterRoute
+  '/digitalguardian': typeof DigitalguardianRoute
   '/protocol': typeof ProtocolRoute
   '/triggers': typeof TriggersRoute
   '/verify': typeof VerifyRoute
@@ -113,10 +127,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/campaign': typeof CampaignRoute
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
   '/dexter': typeof DexterRoute
+  '/digitalguardian': typeof DigitalguardianRoute
   '/protocol': typeof ProtocolRoute
   '/triggers': typeof TriggersRoute
   '/verify': typeof VerifyRoute
@@ -129,11 +145,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai': typeof AiRoute
   '/campaign': typeof CampaignRoute
   '/capsules': typeof CapsulesRouteWithChildren
   '/circle': typeof CircleRoute
   '/decoy': typeof DecoyRoute
   '/dexter': typeof DexterRoute
+  '/digitalguardian': typeof DigitalguardianRoute
   '/protocol': typeof ProtocolRoute
   '/triggers': typeof TriggersRoute
   '/verify': typeof VerifyRoute
@@ -147,11 +165,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai'
     | '/campaign'
     | '/capsules'
     | '/circle'
     | '/decoy'
     | '/dexter'
+    | '/digitalguardian'
     | '/protocol'
     | '/triggers'
     | '/verify'
@@ -163,10 +183,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ai'
     | '/campaign'
     | '/circle'
     | '/decoy'
     | '/dexter'
+    | '/digitalguardian'
     | '/protocol'
     | '/triggers'
     | '/verify'
@@ -178,11 +200,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ai'
     | '/campaign'
     | '/capsules'
     | '/circle'
     | '/decoy'
     | '/dexter'
+    | '/digitalguardian'
     | '/protocol'
     | '/triggers'
     | '/verify'
@@ -195,11 +219,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiRoute: typeof AiRoute
   CampaignRoute: typeof CampaignRoute
   CapsulesRoute: typeof CapsulesRouteWithChildren
   CircleRoute: typeof CircleRoute
   DecoyRoute: typeof DecoyRoute
   DexterRoute: typeof DexterRoute
+  DigitalguardianRoute: typeof DigitalguardianRoute
   ProtocolRoute: typeof ProtocolRoute
   TriggersRoute: typeof TriggersRoute
   VerifyRoute: typeof VerifyRoute
@@ -215,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai': {
+      id: '/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campaign': {
@@ -250,6 +283,13 @@ declare module '@tanstack/react-router' {
       path: '/dexter'
       fullPath: '/dexter'
       preLoaderRoute: typeof DexterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/digitalguardian': {
+      id: '/digitalguardian'
+      path: '/digitalguardian'
+      fullPath: '/digitalguardian'
+      preLoaderRoute: typeof DigitalguardianRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/protocol': {
@@ -327,11 +367,13 @@ const CapsulesRouteWithChildren = CapsulesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiRoute: AiRoute,
   CampaignRoute: CampaignRoute,
   CapsulesRoute: CapsulesRouteWithChildren,
   CircleRoute: CircleRoute,
   DecoyRoute: DecoyRoute,
   DexterRoute: DexterRoute,
+  DigitalguardianRoute: DigitalguardianRoute,
   ProtocolRoute: ProtocolRoute,
   TriggersRoute: TriggersRoute,
   VerifyRoute: VerifyRoute,
